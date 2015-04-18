@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>let's do this</title>
+</head>
+<body>
+<form action="crawlSites" method="post">
+    {% csrf_token %}
+    <label for="hostSeeds">Host Seeds:</label>
+    {{ crawlForm.hostSeeds }}
+    <label for="threadNumber">Thread Number:</label>
+    {{ crawlForm.threadNumber }}
+    <input type="submit" value="OK">
+</form>
+</body>
+</html>
