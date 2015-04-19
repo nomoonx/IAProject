@@ -53,7 +53,7 @@ d3.json("crawlSite", function(error, graph) {
       .call(force.drag);
 
   node.append("title")
-      .text(function(d) { return d.name; });
+      .text(function(d) { return d.url; });
 
   force.on("tick", function() {
     link.attr("x1", function(d) { return d.source.x; })

@@ -10,5 +10,6 @@ urlpatterns = patterns('',
     url(r'^hello/$', 'crawl.views.hello_world'),
     url(r'^$','crawl.views.index'),
     url(r'^crawlSite','crawl.views.crawlSite'),
-    url(r'^showtime','crawl.views.showtime'),
+    url(r'^showtime$','crawl.views.showtime'),
+    url(r'^showtime2$','crawl.views.showtime2'),
 )
