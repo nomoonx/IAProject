@@ -48,6 +48,11 @@
     transition: all 0.5s ease;
 }
 
+li input{
+    margin-left: 20px;
+    line-height: normal;
+}
+
 #wrapper.toggled #sidebar-wrapper  {
     width: 250px;
 }
@@ -79,7 +84,15 @@
     line-height: 40px;
 }
 
-.sidebar-nav li div {
+.right-sidebar-content{
+    color: #b9def0;
+}
+
+.right-sidebar-title{
+    color: #fffb6b;
+}
+
+.sidebar-nav li {
     display: block;
     text-decoration: none;
     color: #999999;

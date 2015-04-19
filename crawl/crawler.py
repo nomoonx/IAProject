@@ -76,7 +76,7 @@ def crawl_result(threadNum, largestNumber, seedUrls):
             domain = 'http://%s' % seedUrl
         pool.put(domain)
         exist.append(domain)
-        nodes.append({'url': domain, 'id': 0, 'numberOfIncome': 0, 'numberOfOutcome': 0})
+        nodes.append({'url': domain, 'id': len(exist)-1, 'numberOfIncome': 0, 'numberOfOutcome': 0})
 
 
     def crawl():
@@ -111,7 +111,7 @@ def crawl_result(threadNum, largestNumber, seedUrls):
                     if link['url'] not in exist:
                         with lock:
                             # print "%s crawls looooooooooooooock %s" % (threading.currentThread().getName(),time.time()-start)
-                            if (len(exist) <= 20):
+                            if (len(exist) <= largestNumber):
                                 pool.put(link['url'])
                             exist.append(link['url'])
                             nodes.append(
