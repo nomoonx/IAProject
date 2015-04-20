@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .forms import crawlInitForm
 from .crawler import crawl_result
+from .politeCrawler import crawl_polite_result
 import json
 
 # Create your views here.
@@ -10,8 +10,7 @@ def hello_world(request):
 
 
 def index(request):
-    form = crawlInitForm(request.POST)
-    return render(request, 'index.html', {'crawlForm': form})
+    return render(request, 'showtime3.html')
 
 
 def showtime(request):
@@ -22,11 +21,26 @@ def showtime(request):
     jsonResponse = crawl_result(threadNumber, maxLength, hostSeeds)
     return HttpResponse(jsonResponse, content_type="application/json")
 
+def politeCrawler(request):
+    param = request.GET['seedHosts']
+    hostSeeds = param.split('\n')
+    threadNumber = int(request.GET['threadsNumber'])
+    maxLength = int(request.GET['maxNumber'])
+    jsonResponse = crawl_polite_result(threadNumber, maxLength, hostSeeds)
+    return HttpResponse(jsonResponse, content_type="application/json")
+
 
 def showtime2(request):
     # form=crawlInitForm(request.POST)
     return render(request, 'showtime2.html')
 
+def showtime3(request):
+    # form=crawlInitForm(request.POST)
+    return render(request, 'showtime3.html')
+
+def showtimeWithoutMarker(request):
+    # form=crawlInitForm(request.POST)
+    return render(request, 'showtime.html')
 
 def crawlSite(request):
     hostSeeds = ['microso.me']

@@ -1,4 +1,5 @@
 __author__ = 'noMoon'
+import robotparser
 import requests, re, urlparse
 import threading
 from Queue import Queue
@@ -20,16 +21,26 @@ class Page:
         r = ""
 
         try:
-            r = requests.get(self.url, headers={'User-Agent': 'noMoon spider'})
-            self.error = False
+            urlparams = urlparse.urlparse(self.url)
+            netloc = urlparams.netloc
+            rp = robotparser.RobotFileParser()
+            rp.set_url("http://" + netloc + "/robots.txt")
+            rp.read()
+            print rp.can_fetch("noMoon spider", self.url)
+            print self.url
+            print urlparams
+            print (
+            (urlparams.path is '/' or urlparams.path is '' or urlparams.path is u'/' or urlparams.path is u'') and (
+            urlparams.query is '' or urlparams.query is u''))
+            if rp.can_fetch("noMoon spider", self.url) or (
+                (urlparams.path is '/' or urlparams.path is '' or urlparams.path is u'/' or urlparams.path is u'') and (
+                    urlparams.query is '' or urlparams.query is u'')):
+                print 'in'
+                r = requests.get(self.url, headers={'User-Agent': 'noMoon spider'})
+                self.error = False
         except requests.exceptions.RequestException as e:
             self.status = e
-        else:
-            # self.error=True
-            if not r.history:
-                self.status = r.status_code
-            else:
-                self.status = r.history[0]
+
         # print '%s status: %s' % (self.url,self.status)
         # if self.status is '200':
         # self.error=False
@@ -62,7 +73,7 @@ class Page:
                 self.outlinks.append(d)
 
 
-def crawl_result(threadNum, largestNumber, seedUrls):
+def crawl_polite_result(threadNum, largestNumber, seedUrls):
     pool = Queue()
     exist = []
     groups = {}
@@ -81,7 +92,6 @@ def crawl_result(threadNum, largestNumber, seedUrls):
         netloc = urlparse.urlparse(domain).netloc
         if netloc not in groups.keys():
             groups[netloc] = len(groups) + 1
-
         nodes.append(
             {'url': domain, 'id': len(exist) - 1, 'numberOfIncome': 0, 'numberOfOutcome': 0, 'group': groups[netloc]})
 
@@ -122,8 +132,8 @@ def crawl_result(threadNum, largestNumber, seedUrls):
                                 pool.put(link['url'])
                             exist.append(link['url'])
                             netloc = urlparse.urlparse(link['url']).netloc
-                            if not netloc in groups.keys():
-                                groups[netloc] = len(groups) + 1;
+                            if netloc not in groups.keys():
+                                groups[netloc] = len(groups) + 1
                             nodes.append(
                                 {'url': link['url'], 'id': len(exist) - 1, 'numberOfIncome': 1, 'numberOfOutcome': 0,
                                  'group': groups[netloc]})
@@ -167,4 +177,4 @@ def crawl_result(threadNum, largestNumber, seedUrls):
 
 
 
-    # print crawl_result(10,20,['http://microso.me'])
+    # print crawl_polite_result(10,20,['http://www.google.com'])

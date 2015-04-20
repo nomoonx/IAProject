@@ -108,7 +108,7 @@
 
     $("#submitCrawlerParams").click(function () {
         $("#page-content-wrapper").empty();
-        $.get("showtime", {
+        $.get("politeCrawler", {
             seedHosts: $("#seedHosts").val(),
             threadsNumber: $("#threadsNumber").val(),
             maxNumber: $("#maxNumber").val()
@@ -162,8 +162,8 @@
                 var circle = svg.append("g").selectAll("circle")
                         .data(force.nodes())
                         .enter().append("circle")
-                        .attr("r", 6)
                         .style("fill", function(d) { return color(d.group); })
+                        .attr("r", 6)
                         .call(force.drag)
                         .on("click", function (d) {
                             $('#nodeNum').text(d.id);
